@@ -8,7 +8,8 @@ import {
   Delete,
   UseFilters,
   Query,
-  UseGuards
+  UseGuards,
+  UseInterceptors
 } from '@nestjs/common';
 import { TestFilterService } from './test-filter.service';
 import { CreateTestFilterDto } from './dto/create-test-filter.dto';
@@ -19,6 +20,7 @@ import { AaaGuard } from './aaa.guard';
 import { Roles } from './role.decorator';
 import { Role } from './role';
 import { TotalDecorator } from './total.decorator';
+import { CatchErrorTestInterceptor } from './test.interceptorError';
 
 @Controller('test-filter')
 export class TestFilterController {
@@ -28,11 +30,12 @@ export class TestFilterController {
   create(@Body() createTestFilterDto: CreateTestFilterDto) {
     return this.testFilterService.create(createTestFilterDto);
   }
-
+  //执行顺序 UseGuards  - UseInterceptors - UseFilters
   @Get('findAll')
   @UseFilters(AfilterFilter)
-  @UseGuards(AaaGuard)
   @Roles(Role.admin)
+  @UseGuards(AaaGuard)
+  @UseInterceptors(CatchErrorTestInterceptor)
   findAll() {
     throw new AException('错误','1111')
     return this.testFilterService.findAll();

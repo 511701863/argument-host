@@ -2,7 +2,9 @@ import { Module,DynamicModule } from '@nestjs/common';
 import { BbbService } from './bbb.service';
 import { BbbController } from './bbb.controller';
 
-@Module({})
+@Module({
+  exports:[BbbService]
+})
 export class BbbModule {
   static register(options: Record<string,any>):DynamicModule {
     return {

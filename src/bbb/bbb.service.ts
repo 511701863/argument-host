@@ -1,7 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateBbbDto } from './dto/create-bbb.dto';
 import { UpdateBbbDto } from './dto/update-bbb.dto';
-
+function test(){
+  return new Promise((res) => {
+    setTimeout(() => {
+      res(`This action returns use 2000 ms`)
+    }, 2000);
+  })
+}
 @Injectable()
 export class BbbService {
   @Inject('CONFIG_OPTIONS') private readonly moduleOptions
@@ -9,8 +15,9 @@ export class BbbService {
     return 'This action adds a new bbb';
   }
 
-  findAll() {
-    return `This action returns all bbb` + this.moduleOptions.value;
+  async findAll() {
+    return await test()
+    
   }
 
   findOne(id: number) {
